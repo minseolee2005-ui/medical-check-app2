@@ -7,6 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
+  <!-- ✅ PWA 필수 -->
+  <link rel="manifest" href="manifest.json">
+
   <style>
     body { font-family: sans-serif; padding:20px; }
     .emergency { background-color: red; color:white; }
@@ -34,6 +37,7 @@
 </p>
 
 <script>
+// 🔥 분석 기능
 function analyze(){
   let symptoms = [];
 
@@ -69,12 +73,14 @@ function analyze(){
 
   document.getElementById("result").innerHTML = resultHTML;
 
+  // 🚨 응급 처리
   if(fever.checked && vomit.checked){
     document.body.classList.add("emergency");
     document.getElementById("emergencyBtn").style.display = "block";
   }
 }
 
+// 📍 병원 찾기
 function findHospital(){
   navigator.geolocation.getCurrentPosition(pos=>{
     let lat = pos.coords.latitude;
@@ -83,8 +89,14 @@ function findHospital(){
   });
 }
 
+// 🚨 119
 function call119(){
   location.href = "tel:119";
+}
+
+// 🔥 PWA (이게 핵심)
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
 }
 </script>
 

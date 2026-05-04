@@ -1,0 +1,8 @@
+{
+  "name": "의료 자가 체크",
+  "short_name": "의료앱",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff0000"
+}

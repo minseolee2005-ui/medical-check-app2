@@ -1,0 +1,74 @@
+<script>
+function analyze(){
+  let symptoms = [];
+
+  if(fever.checked) symptoms.push("발열");
+  if(vomit.checked) symptoms.push("구토");
+  if(cough.checked) symptoms.push("기침");
+
+  // 1️⃣ 진료 요약문 생성
+  let summary = "환자는 ";
+  summary += symptoms.join(", ") + " 증상을 호소하고 있습니다. ";
+
+  // 2️⃣ 질환 추정
+  let diagnosis = "";
+  if(fever.checked && cough.checked){
+    diagnosis = "호흡기 감염 (감기/독감) 의심";
+  } else if(vomit.checked && fever.checked){
+    diagnosis = "위장염 가능성";
+  } else {
+    diagnosis = "일반적인 증상, 추가 진료 필요";
+  }
+
+  // 3️⃣ 질문 추천
+  let questions = [
+    "이 증상의 원인은 무엇인가요?",
+    "추가 검사가 필요할까요?",
+    "어떤 약을 복용해야 하나요?"
+  ];
+
+  // 4️⃣ 응급 판단
+  let emergency = false;
+  if(fever.checked && vomit.checked){
+    emergency = true;
+  }
+
+  // 결과 출력
+  let resultHTML = `
+    <h3>📄 진료 요약</h3>
+    ${summary}
+
+    <h3>🧠 의심 질환</h3>
+    ${diagnosis}
+
+    <h3>❓ 의사에게 물어볼 질문</h3>
+    <ul>
+      ${questions.map(q => `<li>${q}</li>`).join("")}
+    </ul>
+  `;
+
+  document.getElementById("result").innerHTML = resultHTML;
+
+  // 🚨 응급 처리
+  if(emergency){
+    document.body.style.backgroundColor = "red";
+    document.getElementById("emergencyBtn").style.display = "block";
+  }
+}
+
+// 📍 병원 찾기
+function findHospital(){
+  navigator.geolocation.getCurrentPosition(pos=>{
+    let lat = pos.coords.latitude;
+    let lon = pos.coords.longitude;
+
+    let url = `https://www.google.com/maps/search/내과/@${lat},${lon},15z`;
+    window.open(url);
+  });
+}
+
+// 🚨 119 전화
+function call119(){
+  location.href = "tel:119";
+}
+</script>
